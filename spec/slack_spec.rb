@@ -13,8 +13,6 @@ describe Slack do
     expect(Slack.new(token).channels).to eq(["general", "random", "votes"])
   end
 
-  it 'gets the history given a channel name' do
-    expect(Slack.new(token).history('general')).to eq(["hiii"])
-  end
-
+  pending 'gets the history given a channel name'
+  #expect(Slack.new(token).history('general')).to eq(["hiii"])
 end
