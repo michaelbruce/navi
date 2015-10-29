@@ -1,10 +1,20 @@
 require_relative '../slack'
 
+# TODO abstract to new class
+def read_config
+  config = open(ENV['HOME']+'/.slacky')
+  config.readline.chomp
+end
+
 describe Slack do
-  let (:token) { 'xoxp-9319972838-12392936294-13441575734-4043a1a708' }
+  let (:token) { read_config }
 
   it 'gets a list of all channels' do
     expect(Slack.new(token).channels).to eq(["general", "random", "votes"])
+  end
+
+  it 'gets the history given a channel name' do
+    expect(Slack.new(token).history('general')).to eq(["hiii"])
   end
 
 end
