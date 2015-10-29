@@ -1,8 +1,10 @@
 require_relative '../slack'
 
 describe Slack do
-  it 'recieves messages from slack' do
-    token = 'a_security_token'
-    expect(Slack.new(token).messages).to eq('message')
+  let (:token) { 'xoxp-9319972838-12392936294-13441575734-4043a1a708' }
+
+  it 'gets a list of all channels' do
+    expect(Slack.new(token).channels).to eq(["general", "random", "votes"])
   end
+
 end
