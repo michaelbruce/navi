@@ -34,8 +34,8 @@ class Navi
       response = get_objects('channels.history?channel=C02N593H6', 'messages')
       puts response.map{ |message| message['text'] }
     elsif lastCommand.chomp == '/ben'
-      response = get_objects('im.history?channel=D030RQC90', 'messages')
-      puts response.map{ |message| message['text'] }
+      response = get_objects('im.history?channel=D030RQC90&count=10', 'messages')
+      puts response.map{ |message| message['text'] }.reverse
     elsif lastCommand.chomp == '/users'
       all_usernames
     elsif lastCommand.chomp == '/slackdata'
