@@ -47,12 +47,17 @@ class Navi
       puts 'Fetching all direct message channels between yourself and other users'
       ims
       puts @im.map { |im| "#{im['id']} #{im['user']} #{@user_records[im['user']]['name']}" }
+    elsif lastCommand.chomp.start_with?('/')
+      puts 'command not detected.. searching for usernames'
     end
   end
 
   def get_objects(method, key)
     self.class.get("/#{method}", query: { token: @token }).tap do |response|
-      raise "error retrieving #{key} from #{method}: #{response.fetch('error', 'unknown error')}" unless response['ok']
+      unless response['ok']
+        raise "error retrieving #{key} from #{method}: " +
+              "#{response.fetch('error', 'unknown error')}"
+      end
     end.fetch(key)
   end
 
