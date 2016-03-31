@@ -30,9 +30,13 @@ class Navi
     if lastCommand.chomp == 'exit'
       exit
     elsif lastCommand.chomp == '/tech'
-      history
+      response = get_objects('channels.history?channel=C02N593H6', 'messages')
+      puts response.map{ |message| message['text'] }
     elsif lastCommand.chomp == '/users'
       all_usernames
+    elsif lastCommand.chomp == '/channels'
+      channels
+      puts @channels.map { |channel| "#{channel['id']} #{channel['name']}" }
     end
   end
 
@@ -40,6 +44,10 @@ class Navi
     self.class.get("/#{method}", query: { token: @token }).tap do |response|
       raise "error retrieving #{key} from #{method}: #{response.fetch('error', 'unknown error')}" unless response['ok']
     end.fetch(key)
+  end
+
+  def channels
+    @channels ||= get_objects('channels.list', 'channels')
   end
 
   def history
