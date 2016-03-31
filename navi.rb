@@ -33,6 +33,9 @@ class Navi
     elsif lastCommand.chomp == '/tech'
       response = get_objects('channels.history?channel=C02N593H6', 'messages')
       puts response.map{ |message| message['text'] }
+    elsif lastCommand.chomp == '/ben'
+      response = get_objects('im.history?channel=D030RQC90', 'messages')
+      puts response.map{ |message| message['text'] }
     elsif lastCommand.chomp == '/users'
       all_usernames
     elsif lastCommand.chomp == '/slackdata'
@@ -43,7 +46,6 @@ class Navi
     elsif lastCommand.chomp == '/ims'
       puts 'Fetching all direct message channels between yourself and other users'
       ims
-      puts @user_records
       puts @im.map { |im| "#{im['id']} #{im['user']} #{@user_records[im['user']]['name']}" }
     end
   end
