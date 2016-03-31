@@ -3,7 +3,18 @@ GEM
   specs:
     coderay (1.1.0)
     diff-lcs (1.2.5)
+    httmultiparty (0.3.16)
+      httparty (>= 0.7.3)
+      mimemagic
+      multipart-post
+    httparty (0.13.7)
+      json (~> 1.8)
+      multi_xml (>= 0.5.2)
+    json (1.8.3)
     method_source (0.8.2)
+    mimemagic (0.3.1)
+    multi_xml (0.5.5)
+    multipart-post (2.0.0)
     pry (0.10.2)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -22,10 +33,16 @@ GEM
       rspec-support (~> 3.3.0)
     rspec-support (3.3.0)
     slop (3.6.0)
+    trollop (2.1.2)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  httmultiparty
   pry
   rspec
+  trollop
+
+BUNDLED WITH
+   1.10.6

@@ -1,10 +1,18 @@
 require_relative 'slack'
 
+require 'httmultiparty'
+require 'trollop'
+
 class Navi
+  include HTTMultiParty
+  base_uri 'https://slack.com/api'
+
   def initialize
     puts 'Hey Listen'
     token = read_config('.slacky')
     display_message('hi', {from: 'mike'})
+    @token = read_config('.slacky')
+    puts "token is #{@token}"
     while true
       user_input
     end
@@ -21,7 +29,30 @@ class Navi
     puts "You entered, #{lastCommand}"
     if lastCommand.chomp == 'exit'
       exit
+    elsif lastCommand.chomp == '/tech'
+      history
+    elsif lastCommand.chomp == '/users'
+      all_usernames
     end
+  end
+
+  def get_objects(method, key)
+    self.class.get("/#{method}", query: { token: @token }).tap do |response|
+      raise "error retrieving #{key} from #{method}: #{response.fetch('error', 'unknown error')}" unless response['ok']
+    end.fetch(key)
+  end
+
+  def history
+    @history ||= get_objects('im.history', 'messages')
+  end
+
+  def users
+    @users ||= get_objects('users.list', 'members')
+  end
+
+  def all_usernames
+    users
+    puts @users.map{ |user| user['name'] }
   end
 
   def read_config(config_name)
