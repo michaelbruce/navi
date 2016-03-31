@@ -9,10 +9,11 @@ class Navi
 
   def initialize
     puts 'Hey Listen'
-    token = read_config('.slacky')
+    token = read_config('.slacky') # !> assigned but unused variable - token
     display_message('hi', {from: 'mike'})
     @token = read_config('.slacky')
     puts "token is #{@token}"
+    cache_slack_data
     while true
       user_input
     end
@@ -34,9 +35,16 @@ class Navi
       puts response.map{ |message| message['text'] }
     elsif lastCommand.chomp == '/users'
       all_usernames
+    elsif lastCommand.chomp == '/slackdata'
+      puts @user_records
     elsif lastCommand.chomp == '/channels'
       channels
       puts @channels.map { |channel| "#{channel['id']} #{channel['name']}" }
+    elsif lastCommand.chomp == '/ims'
+      puts 'Fetching all direct message channels between yourself and other users'
+      ims
+      puts @user_records
+      puts @im.map { |im| "#{im['id']} #{im['user']} #{@user_records[im['user']]['name']}" }
     end
   end
 
@@ -46,8 +54,18 @@ class Navi
     end.fetch(key)
   end
 
+  def cache_slack_data
+    users
+    @user_records = {}
+    users.each { |user| @user_records[user['id']] = user }
+  end
+
   def channels
     @channels ||= get_objects('channels.list', 'channels')
+  end
+
+  def ims
+    @im ||= get_objects('im.list', 'ims')
   end
 
   def history
@@ -59,7 +77,6 @@ class Navi
   end
 
   def all_usernames
-    users
     puts @users.map{ |user| user['name'] }
   end
 
@@ -69,3 +86,5 @@ class Navi
   end
 
 end
+# ~> -:1:in `require_relative': cannot infer basepath (LoadError)
+# ~> 	from -:1:in `<main>'
